@@ -334,3 +334,161 @@
     .project-card {
       transition: all 0.2s;
     }
+    
+    /* Estilos para o dialog */
+    dialog {
+    border: none;
+    border-radius: 1.5rem;
+    padding: 0;
+    background: #0d0f1a;
+    width: 1200px;
+    height: 800px;
+    max-width: 90vw;
+    max-height: 90vh;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    overflow: hidden;
+    animation: dialogIn 0.3s ease;
+    
+    /* CENTRALIZAÇÃO PERFEITA */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    
+    /* GARANTE QUE NÃO ULTRAPASSE A TELA */
+    max-height: 90vh;
+    max-width: 90vw;
+    }
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+}
+
+    @keyframes dialogIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95) translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .dialog-header {
+      background: rgba(13, 15, 26, 0.98);
+      padding: 0.8rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .dialog-header .game-title {
+      color: #f0eee6;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .dialog-header .close-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #b0b8d0;
+      padding: 0.3rem 1.2rem;
+      border-radius: 40px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: 0.3s;
+    }
+
+    .dialog-header .close-btn:hover {
+      background: rgba(255, 70, 70, 0.15);
+      color: #ff6b6b;
+      border-color: rgba(255, 70, 70, 0.2);
+    }
+
+    .dialog-body {
+      position: relative;
+      width: 100%;
+      height: calc(100% - 52px);
+      background: #000;
+    }
+
+    .dialog-body iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    .dialog-body .loading-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #6a7a9a;
+      font-size: 0.9rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.8rem;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .dialog-body .loading-overlay .spinner {
+      width: 30px;
+      height: 30px;
+      border: 3px solid rgba(255, 255, 255, 0.05);
+      border-top-color: #f5c76b;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Botão de abrir em nova janela (opcional) */
+    .dialog-header .open-new-btn {
+      background: rgba(255, 215, 0, 0.08);
+      border: 1px solid rgba(255, 215, 0, 0.1);
+      color: #d4b87a;
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: 0.3s;
+      margin-right: 0.5rem;
+    }
+
+    .dialog-header .open-new-btn:hover {
+      background: rgba(255, 215, 0, 0.15);
+      color: #f5e6c4;
+      border-color: rgba(255, 215, 0, 0.2);
+    }
+
+    .dialog-header .actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      dialog {
+        max-width: 98vw;
+        max-height: 95vh;
+        width: 100%;
+        height: 95vh;
+        border-radius: 1rem;
+      }
+      .dialog-header {
+        padding: 0.6rem 1rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+    }
