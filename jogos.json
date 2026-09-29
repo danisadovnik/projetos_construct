@@ -1,0 +1,30 @@
+{
+  "jogosModulo": [
+    {
+      "id": "asteroid",
+      "nome": "Asteroid",
+      "icone": "☄️",
+      "embedUrl": "https://games.construct.net/88390/latest"
+    },
+    {
+      "id": "coelho",
+      "nome": "Coelho",
+      "icone": "🐇",
+      "embedUrl": "https://games.construct.net/88389/latest"
+    },
+    {
+      "id": "arena",
+      "nome": "Arena",
+      "icone": "⚔️",
+      "embedUrl": "https://games.construct.net/88296/latest"
+    },
+    {
+      "id": "plataforma",
+      "nome": "Plataforma",
+      "icone": "🎮",
+      "embedUrl": "https://games.construct.net/88386/latest"
+    }
+  ],
+  "jogosAlunos": [
+  ]
+}

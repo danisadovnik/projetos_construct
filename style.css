@@ -493,3 +493,128 @@ dialog::backdrop {
         gap: 0.5rem;
       }
     }
+/* ============================================
+   SEÇÃO: TÍTULOS E BLOCOS
+   ============================================ */
+
+.section-header {
+  margin-bottom: 1.5rem;
+  padding-left: 0.5rem;
+}
+
+.section-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #f0eee6;
+  letter-spacing: -0.3px;
+  margin-bottom: 0.3rem;
+}
+
+.section-subtitle {
+  font-size: 0.85rem;
+  color: #8a93af;
+  letter-spacing: 0.3px;
+}
+
+/* ============================================
+   BLOCO EXPANSÍVEL: JOGOS DOS ALUNOS
+   ============================================ */
+
+.alunos-section {
+  margin-top: 3rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 2rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.alunos-section[open] {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 215, 0, 0.12);
+}
+
+.alunos-summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 1.4rem 1.8rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #f0eee6;
+  transition: 0.2s;
+  user-select: none;
+}
+
+.alunos-summary::-webkit-details-marker {
+  display: none;
+}
+
+.alunos-summary:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.alunos-summary-icon {
+  font-size: 1.5rem;
+}
+
+.alunos-summary-text {
+  flex: 1;
+}
+
+.alunos-summary-arrow {
+  font-size: 0.8rem;
+  color: #8a93af;
+  transition: transform 0.3s ease;
+}
+
+.alunos-section[open] .alunos-summary-arrow {
+  transform: rotate(180deg);
+  color: #f5c76b;
+}
+
+.alunos-content {
+  padding: 0.5rem 1.8rem 2rem;
+  animation: fadeInContent 0.4s ease;
+}
+
+@keyframes fadeInContent {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   CARD DE JOGO DO ALUNO
+   ============================================ */
+
+.project-card.card-aluno .project-name {
+  font-size: 1.3rem;
+}
+
+.project-card.card-aluno .project-desc {
+  font-size: 0.8rem;
+  color: #a7b1cc;
+  line-height: 1.5;
+  margin-top: 0.6rem;
+  padding: 0 0.5rem;
+  text-align: center;
+  max-width: 100%;
+}
+
+.project-card.card-aluno .project-author {
+  font-size: 0.75rem;
+  color: #d4b87a;
+  background: rgba(255, 215, 0, 0.06);
+  padding: 0.2rem 0.9rem;
+  border-radius: 40px;
+  border: 1px solid rgba(255, 215, 0, 0.08);
+  margin-top: 0.8rem;
+  letter-spacing: 0.3px;
+  font-weight: 500;
+}
+
+.project-card.card-aluno::before {
+  background: linear-gradient(90deg, #9bdeac, #7fc9ff, #9bdeac);
+}

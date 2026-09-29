@@ -32,36 +32,30 @@
       </div>
     </div>
 
-    <!-- grade com os 4 projetos -->
-    <div class="projects-grid">
-      <a href="#" class="project-card card-asteroid" style="text-decoration: none;" data-game="https://games.construct.net/88390/latest" data-name="Asteroid">
-        <div class="project-icon">☄️</div>
-        <div class="project-name">Asteroid</div>
-        <div class="project-sub">Construct 3</div>
-        <div class="cta-play">▶ selecionar</div>
-      </a>
-
-      <a href="#" class="project-card card-coelho" style="text-decoration: none;" data-game="https://games.construct.net/88389/latest" data-name="Coelho">
-        <div class="project-icon">🐇</div>
-        <div class="project-name">Coelho</div>
-        <div class="project-sub">Construct 3</div>
-        <div class="cta-play">▶ selecionar</div>
-      </a>
-
-      <a href="#" class="project-card card-arena" style="text-decoration: none;" data-game="https://games.construct.net/88296/latest" data-name="Arena">
-        <div class="project-icon">⚔️</div>
-        <div class="project-name">Arena</div>
-        <div class="project-sub">Construct 3</div>
-        <div class="cta-play">▶ selecionar</div>
-      </a>
-
-      <a href="#" class="project-card card-plataforma" style="text-decoration: none;" data-game="https://games.construct.net/88386/latest" data-name="Plataforma">
-        <div class="project-icon">🎮</div>
-        <div class="project-name">Plataforma</div>
-        <div class="project-sub">Construct 3</div>
-        <div class="cta-play">▶ selecionar</div>
-      </a>
+    <!-- TÍTULO DA SEÇÃO: JOGOS DO MÓDULO -->
+    <div class="section-header">
+      <h2 class="section-title">🎯 Jogos propostos pelo módulo Construct</h2>
+      <span class="section-subtitle">Projetos guiados desenvolvidos em aula</span>
     </div>
+
+    <!-- grade com os 4 projetos do módulo (preenchida via JSON) -->
+    <div class="projects-grid" id="jogosModuloGrid">
+      <!-- preenchido dinamicamente pelo JavaScript -->
+    </div>
+
+    <!-- BLOCO EXPANSÍVEL: JOGOS DOS ALUNOS -->
+    <details class="alunos-section" id="alunosSection">
+      <summary class="alunos-summary">
+        <span class="alunos-summary-icon">🎓</span>
+        <span class="alunos-summary-text">Jogos desenvolvidos pelos alunos</span>
+        <span class="alunos-summary-arrow">▼</span>
+      </summary>
+      <div class="alunos-content">
+        <div class="projects-grid" id="jogosAlunosGrid">
+          <!-- preenchido dinamicamente pelo JavaScript -->
+        </div>
+      </div>
+    </details>
 
     <!-- rodapé -->
     <div class="footer-note">
@@ -96,100 +90,179 @@
     </div>
   </dialog>
 
-  <script>
-    // Referências
-    const dialog = document.getElementById('gameDialog');
-    const dialogFrame = document.getElementById('dialogFrame');
-    const dialogTitle = document.getElementById('dialogTitle');
-    const dialogLoading = document.getElementById('dialogLoading');
-    const closeDialogBtn = document.getElementById('closeDialogBtn');
-    const openNewBtn = document.getElementById('openNewBtn');
-    
-    let currentGameUrl = '';
-    let currentGameName = '';
+ <script>
+  // Referências
+  const dialog = document.getElementById('gameDialog');
+  const dialogFrame = document.getElementById('dialogFrame');
+  const dialogTitle = document.getElementById('dialogTitle');
+  const dialogLoading = document.getElementById('dialogLoading');
+  const closeDialogBtn = document.getElementById('closeDialogBtn');
+  const openNewBtn = document.getElementById('openNewBtn');
+  const fullscreenBtn = document.getElementById('fullscreenBtn');
 
-    // Função para abrir o jogo no dialog
-    function abrirJogoDialog(url, nome) {
-      currentGameUrl = url;
-      currentGameName = nome;
-      
-      dialogTitle.textContent = '🎮 ' + nome;
-      dialogLoading.style.display = 'flex';
-      dialogFrame.src = url;
-      
-      dialogFrame.onload = function() {
-        dialogLoading.style.display = 'none';
-      };
-      
-      dialog.showModal();
+  const jogosModuloGrid = document.getElementById('jogosModuloGrid');
+  const jogosAlunosGrid = document.getElementById('jogosAlunosGrid');
+
+  let currentGameUrl = '';
+  let currentGameName = '';
+
+  // ============================================
+  // CARREGAMENTO DOS JOGOS A PARTIR DO JSON
+  // ============================================
+
+  async function carregarJogos() {
+    try {
+      const resposta = await fetch('jogos.json');
+      if (!resposta.ok) throw new Error('Não foi possível carregar o jogos.json');
+      const dados = await resposta.json();
+
+      renderizarJogosModulo(dados.jogosModulo || []);
+      renderizarJogosAlunos(dados.jogosAlunos || []);
+    } catch (erro) {
+      console.error('❌ Erro ao carregar jogos:', erro);
+      // Fallback: mostra mensagem amigável
+      jogosModuloGrid.innerHTML = '<p style="color:#8a93af; grid-column: 1/-1; text-align:center;">Não foi possível carregar a lista de jogos.</p>';
     }
+  }
 
-    // Função para fechar o dialog
-    function fecharDialog() {
-      dialog.close();
-      dialogFrame.src = '';
-      dialogLoading.style.display = 'flex';
-    }
-
-    // Abrir em nova janela
-    function abrirNovaJanela() {
-      if (currentGameUrl) {
-        window.open(currentGameUrl, '_blank');
-      }
-    }
-
-    // Evento de clique nos cards
-    document.querySelectorAll('.project-card').forEach(card => {
-      card.addEventListener('click', function(e) {
+  // Renderiza os cards dos jogos do módulo
+  function renderizarJogosModulo(jogos) {
+    jogosModuloGrid.innerHTML = '';
+    jogos.forEach(jogo => {
+      const card = document.createElement('a');
+      card.href = '#';
+      card.className = `project-card card-${jogo.id}`;
+      card.style.textDecoration = 'none';
+      card.dataset.game = jogo.embedUrl;
+      card.dataset.name = jogo.nome;
+      card.innerHTML = `
+        <div class="project-icon">${jogo.icone || '🎮'}</div>
+        <div class="project-name">${jogo.nome}</div>
+        <div class="project-sub">Construct 3</div>
+        <div class="cta-play">▶ selecionar</div>
+      `;
+      card.addEventListener('click', e => {
         e.preventDefault();
-        const gameUrl = this.dataset.game;
-        const gameName = this.dataset.name;
-        abrirJogoDialog(gameUrl, gameName);
+        abrirJogoDialog(jogo.embedUrl, jogo.nome);
       });
+      jogosModuloGrid.appendChild(card);
     });
+  }
 
-    // Fechar com o botão
-    closeDialogBtn.addEventListener('click', fecharDialog);
+  // Renderiza os cards dos jogos dos alunos
+  function renderizarJogosAlunos(jogos) {
+    jogosAlunosGrid.innerHTML = '';
+    if (jogos.length === 0) {
+      jogosAlunosGrid.innerHTML = '<p style="color:#8a93af; grid-column: 1/-1; text-align:center;">Nenhum jogo de aluno cadastrado ainda.</p>';
+      return;
+    }
+    jogos.forEach(jogo => {
+      const card = document.createElement('a');
+      card.href = '#';
+      card.className = `project-card card-aluno`;
+      card.style.textDecoration = 'none';
+      card.dataset.game = jogo.embedUrl;
+      card.dataset.name = jogo.nome;
+      card.innerHTML = `
+        <div class="project-icon">${jogo.icone || '🎮'}</div>
+        <div class="project-name">${jogo.nome}</div>
+        <div class="project-desc">${jogo.descricao || ''}</div>
+        <div class="project-author">👤 ${jogo.aluno || 'Aluno'}</div>
+        <div class="cta-play">▶ jogar</div>
+      `;
+      card.addEventListener('click', e => {
+        e.preventDefault();
+        abrirJogoDialog(jogo.embedUrl, jogo.nome);
+      });
+      jogosAlunosGrid.appendChild(card);
+    });
+  }
 
-    // Fechar com ESC (já é nativo do dialog)
-    dialog.addEventListener('cancel', fecharDialog);
+  // ============================================
+  // DIALOG (abrir/fechar/fullscreen)
+  // ============================================
 
-    // Abrir em nova janela
-    openNewBtn.addEventListener('click', abrirNovaJanela);
+  function abrirJogoDialog(url, nome) {
+    currentGameUrl = url;
+    currentGameName = nome;
+    dialogTitle.textContent = '🎮 ' + nome;
+    dialogLoading.style.display = 'flex';
+    dialogFrame.src = url;
+    dialogFrame.onload = function () {
+      dialogLoading.style.display = 'none';
+    };
+    dialog.showModal();
+  }
 
-    // ============================================
-    // BLOQUEIO DE SCROLL QUANDO DIALOG ESTIVER ABERTO
-    // ============================================
+  function fecharDialog() {
+    dialog.close();
+    dialogFrame.src = '';
+    dialogLoading.style.display = 'flex';
+  }
 
-    document.addEventListener('keydown', function(e) {
-      if (dialog.open) {
-        const teclasScroll = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space', 'PageUp', 'PageDown', 'Home', 'End'];
-        if (teclasScroll.includes(e.code)) {
-          e.preventDefault();
-          e.stopPropagation();
-          return false;
-        }
-      }
-    }, { passive: false, capture: true });
+  function abrirNovaJanela() {
+    if (currentGameUrl) window.open(currentGameUrl, '_blank');
+  }
 
-    document.addEventListener('wheel', function(e) {
-      if (dialog.open && e.target.closest('iframe')) {
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      dialog.requestFullscreen().catch(err => console.error('Erro fullscreen:', err));
+    } else {
+      document.exitFullscreen();
+    }
+  }
+
+  // ============================================
+  // EVENTOS
+  // ============================================
+  closeDialogBtn.addEventListener('click', fecharDialog);
+  openNewBtn.addEventListener('click', abrirNovaJanela);
+  //fullscreenBtn.addEventListener('click', toggleFullscreen);
+  dialog.addEventListener('cancel', fecharDialog);
+
+  document.addEventListener('fullscreenchange', () => {
+    if (fullscreenBtn) {
+      fullscreenBtn.textContent = document.fullscreenElement ? '⛶ Sair' : '⛶ Tela cheia';
+    }
+  });
+
+  // ============================================
+  // BLOQUEIO DE SCROLL QUANDO DIALOG ESTIVER ABERTO
+  // ============================================
+  document.addEventListener('keydown', function (e) {
+    if (dialog.open) {
+      const teclasScroll = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space', 'PageUp', 'PageDown', 'Home', 'End'];
+      if (teclasScroll.includes(e.code)) {
         e.preventDefault();
         e.stopPropagation();
         return false;
       }
-    }, { passive: false, capture: true });
+    }
+  }, { passive: false, capture: true });
 
-    document.addEventListener('touchmove', function(e) {
-      if (dialog.open && e.target.closest('iframe')) {
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
-      }
-    }, { passive: false, capture: true });
+  document.addEventListener('wheel', function (e) {
+    if (dialog.open && e.target.closest('iframe')) {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    }
+  }, { passive: false, capture: true });
 
-    console.log('🎮 Dialog com iframe pronto!');
-  </script>
+  document.addEventListener('touchmove', function (e) {
+    if (dialog.open && e.target.closest('iframe')) {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    }
+  }, { passive: false, capture: true });
+
+  // ============================================
+  // INICIALIZA
+  // ============================================
+  carregarJogos();
+
+  console.log('🎮 Sistema de jogos carregado!');
+</script>
 
 </body>
 </html>

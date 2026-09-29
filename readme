@@ -1,0 +1,11 @@
+    Exemplo de jogo cadastrado para aluno no jogos.json
+"jogosAlunos": [
+    {
+    "id": "idJogo",
+    "nome": "Nome do Jogo",
+    "descricao": "Breve descrição do jogo desenvolvido pelo aluno.",
+    "aluno": "Nome do Aluno",
+    "icone": "🚀",
+    "embedUrl": "linkembeded"
+    }
+]
