@@ -1,11 +1,310 @@
-    Exemplo de jogo cadastrado para aluno no jogos.json
-"jogosAlunos": [
+# 🎮 CódigoKid Erechim · GameStarter
+
+Landing page que reúne os jogos desenvolvidos nas aulas da **CódigoKid Erechim**, organizados por módulo (Construct, Scratch) e uma área separada para os jogos desenvolvidos pelos alunos.
+
+---
+
+## 📁 Estrutura do projeto
+
+```
+projetos-games/
+├── index.html          # Página principal
+├── style.css           # Estilos da página
+├── jogos.json          # ⭐ Configuração de TODOS os jogos (edite aqui!)
+├── logo.png            # Logo da escola (substitua pela logo oficial)
+├── favicon.png         # Ícone da aba do navegador
+└── README.md           # Este arquivo
+```
+
+---
+
+## ⚙️ Como funciona
+
+A página é **totalmente dinâmica**. Todo o conteúdo dos jogos (nomes, ícones, links, módulos e jogos dos alunos) vem do arquivo `jogos.json`. O `index.html` **não precisa ser alterado** para adicionar, remover ou reorganizar jogos.
+
+O JavaScript da página:
+1. Faz `fetch('jogos.json')` ao carregar
+2. Renderiza os módulos na ordem do array `modulos`
+3. Renderiza os jogos dos alunos no bloco expansível ao final
+4. Ao clicar em um card, abre o jogo dentro de um `<dialog>` com iframe
+
+---
+
+## 📝 Estrutura do `jogos.json`
+
+O arquivo tem **duas chaves principais**: `modulos` e `jogosAlunos`.
+
+```json
+{
+  "modulos": [ /* ... */ ],
+  "jogosAlunos": [ /* ... */ ]
+}
+```
+
+### 🔹 `modulos` — Módulos do curso (Construct, Scratch, etc.)
+
+Cada item do array representa **uma seção** da página.
+
+```json
+{
+  "id": "construct",
+  "titulo": "Jogos propostos pelo módulo Construct",
+  "subtitulo": "Projetos guiados desenvolvidos em aula",
+  "icone": "🎯",
+  "cor": "#f5c76b",
+  "jogos": [ /* ... */ ]
+}
+```
+
+| Campo | Obrigatório | Descrição |
+|---|---|---|
+| `id` | ✅ | Identificador único do módulo (usado em classes CSS) |
+| `titulo` | ✅ | Título exibido acima dos cards |
+| `subtitulo` | ❌ | Texto menor abaixo do título |
+| `icone` | ❌ | Emoji exibido ao lado do título (padrão: 🎯) |
+| `cor` | ❌ | Cor de destaque do módulo em hexadecimal (padrão: `#f5c76b`) |
+| `jogos` | ✅ | Array de jogos do módulo (veja abaixo) |
+
+### 🔹 `modulos[].jogos` — Jogos de cada módulo
+
+```json
+{
+  "id": "asteroid",
+  "nome": "Asteroid",
+  "icone": "☄️",
+  "embedUrl": "https://games.construct.net/88390/latest"
+}
+```
+
+| Campo | Obrigatório | Descrição |
+|---|---|---|
+| `id` | ✅ | Identificador único do jogo (usado em classes CSS) |
+| `nome` | ✅ | Nome exibido no card |
+| `icone` | ❌ | Emoji exibido no card (padrão: 🎮) |
+| `embedUrl` | ✅ | URL do jogo (usada no iframe do dialog) |
+
+> 💡 O rótulo exibido abaixo do nome do jogo é automático: **"Scratch"** se o módulo for `id: "scratch"`, senão **"Construct 3"**. Se quiser customizar, veja a seção "Personalizações avançadas".
+
+### 🔹 `jogosAlunos` — Jogos desenvolvidos pelos alunos
+
+Esses jogos aparecem no bloco expansível **"Jogos desenvolvidos pelos alunos"** ao final da página.
+
+```json
+{
+  "id": "aluno1",
+  "nome": "Nome do Jogo 1",
+  "descricao": "Breve descrição do jogo desenvolvido pelo aluno.",
+  "aluno": "Nome do Aluno 1",
+  "icone": "🚀",
+  "embedUrl": "https://games.construct.net/XXXXX/latest"
+}
+```
+
+| Campo | Obrigatório | Descrição |
+|---|---|---|
+| `id` | ✅ | Identificador único |
+| `nome` | ✅ | Nome do jogo |
+| `descricao` | ❌ | Breve descrição exibida no card |
+| `aluno` | ✅ | Nome do aluno (exibido com ícone 👤) |
+| `icone` | ❌ | Emoji do card (padrão: 🎮) |
+| `embedUrl` | ✅ | URL do jogo |
+
+---
+
+## ➕ Como adicionar um novo jogo
+
+### Jogo em módulo existente (ex.: Construct)
+
+Abra `jogos.json`, encontre o módulo desejado e adicione um objeto ao array `jogos`:
+
+```json
+{
+  "id": "novo-jogo",
+  "nome": "Novo Jogo",
+  "icone": "🛸",
+  "embedUrl": "https://games.construct.net/XXXXX/latest"
+}
+```
+
+### Jogo de aluno
+
+Adicione um objeto ao array `jogosAlunos`:
+
+```json
+{
+  "id": "aluno3",
+  "nome": "Nome do Jogo 3",
+  "descricao": "Descrição do jogo.",
+  "aluno": "Nome do Aluno 3",
+  "icone": "🐢",
+  "embedUrl": "https://games.construct.net/XXXXX/latest"
+}
+```
+
+**Salve o arquivo e recarregue a página** — o novo jogo aparece automaticamente. 🚀
+
+---
+
+## ➕ Como adicionar um novo módulo (ex.: Unity, Godot)
+
+Adicione um novo objeto ao array `modulos` no `jogos.json`:
+
+```json
+{
+  "id": "unity",
+  "titulo": "Jogos propostos pelo módulo Unity",
+  "subtitulo": "Projetos em 3D",
+  "icone": "🎲",
+  "cor": "#a78bfa",
+  "jogos": [
     {
-    "id": "idJogo",
-    "nome": "Nome do Jogo",
-    "descricao": "Breve descrição do jogo desenvolvido pelo aluno.",
-    "aluno": "Nome do Aluno",
-    "icone": "🚀",
-    "embedUrl": "linkembeded"
+      "id": "unity-jogo1",
+      "nome": "Jogo 3D",
+      "icone": "🧊",
+      "embedUrl": "https://exemplo.com/jogo"
     }
-]
+  ]
+}
+```
+
+> A seção aparecerá **na ordem em que estiver no array**. Para mudar a ordem, basta reordenar os objetos no JSON.
+
+---
+
+## 🔗 URLs de embed por plataforma
+
+Cada plataforma tem um formato de URL de embed específico:
+
+| Plataforma | Formato da URL |
+|---|---|
+| **Construct 3** | `https://games.construct.net/SEU_ID/latest` |
+| **Scratch** | `https://scratch.mit.edu/projects/SEU_ID/embed` |
+| **itch.io** | `https://itch.io/embed/SEU_ID` |
+| **GitHub Pages** | `https://seu-usuario.github.io/seu-repo/` |
+
+> ⚠️ Sempre use o link de **embed** (não o link normal da página), pois ele é o que funciona dentro do iframe.
+
+---
+
+## 🎨 Personalizações avançadas
+
+### Trocar a cor de destaque de um módulo
+
+No `jogos.json`, altere o campo `"cor"` para qualquer valor hexadecimal:
+
+```json
+"cor": "#ff9b4a"
+```
+
+Essa cor aparece na **borda lateral esquerda** do título da seção e na **linha superior** dos cards do módulo.
+
+### Cores específicas dos ícones dos jogos
+
+No `style.css`, adicione uma classe seguindo o padrão `.card-{id}`:
+
+```css
+.card-novo-jogo .project-icon { color: #ff7a7a; }
+```
+
+Onde `novo-jogo` é o `id` do jogo no JSON.
+
+### Rótulo abaixo do nome do jogo
+
+O texto exibido em `.project-sub` é definido no JavaScript:
+
+```javascript
+<div class="project-sub">${modulo.id === 'scratch' ? 'Scratch' : 'Construct 3'}</div>
+```
+
+Para adicionar outro módulo com rótulo próprio, edite essa linha ou adicione um campo `"plataforma"` no JSON do módulo. Exemplo sugerido:
+
+```javascript
+<div class="project-sub">${modulo.plataforma || 'Construct 3'}</div>
+```
+
+E no JSON:
+
+```json
+"plataforma": "Scratch"
+```
+
+---
+
+## 🔧 Manutenção técnica
+
+### O dialog (janela do jogo)
+
+- Abre com `dialog.showModal()`
+- **Fecha** com o botão "Fechar", com a tecla **ESC** ou pelo evento nativo `cancel`
+- O iframe é **limpo** (`src = ''`) ao fechar, para liberar recursos
+- Tem botão **"↗ Nova janela"** para abrir o jogo em aba separada
+
+### Bloqueio de scroll
+
+Quando o dialog está aberto, o JavaScript bloqueia:
+
+- **Teclas** que rolam a página (`↑ ↓ ← →`, `Espaço`, `PageUp/Down`, `Home`, `End`)
+- **Scroll do mouse** dentro do iframe
+- **Touch** dentro do iframe (mobile)
+
+Isso é necessário para que as **setas direcionais controlem o jogo** em vez de rolar a página.
+
+### Fullscreen
+
+- O botão de fullscreen **nativo do Construct 3** funciona porque o iframe tem `allowfullscreen` e `allow="fullscreen; autoplay; gamepad; accelerometer; gyroscope"`
+- **Não há botão de fullscreen próprio** no header do dialog (foi removido intencionalmente)
+
+### Cache do navegador
+
+Se você editar o `jogos.json` e a página **não atualizar**:
+
+1. Faça um **hard refresh**: `Ctrl + Shift + R` (Windows/Linux) ou `Cmd + Shift + R` (Mac)
+2. Ou abra o DevTools → aba Network → marque **"Disable cache"**
+
+> ⚠️ **Importante:** o `fetch('jogos.json')` só funciona se a página for servida por um **servidor HTTP** (local ou hospedado). Abrir o `index.html` diretamente via `file://` **não carrega o JSON** por restrições de segurança do navegador (CORS).
+
+### Servir localmente (para testes)
+
+Se precisar testar localmente, use um servidor simples:
+
+```bash
+# Python 3
+python -m http.server 8000
+
+# Node.js (npx)
+npx serve
+```
+
+Depois acesse `http://localhost:8000`.
+
+---
+
+## ✅ Checklist antes de publicar
+
+- [ ] `jogos.json` está válido (sem vírgulas sobrando, sem chaves faltando)
+- [ ] Todos os `embedUrl` estão corretos e acessíveis
+- [ ] `logo.png` e `favicon.png` estão na raiz
+- [ ] Testou em **desktop** e **mobile**
+- [ ] Testou o botão de **fullscreen** do Construct 3
+- [ ] Testou abrir/fechar o dialog e as setas dentro do jogo
+
+> 💡 **Dica para validar o JSON:** cole o conteúdo em [jsonlint.com](https://jsonlint.com) antes de publicar.
+
+---
+
+## 📌 Resumo rápido
+
+| Quero... | Onde edito |
+|---|---|
+| Adicionar um jogo em um módulo | `jogos.json` → `modulos[].jogos` |
+| Adicionar um jogo de aluno | `jogos.json` → `jogosAlunos` |
+| Adicionar um novo módulo | `jogos.json` → `modulos` |
+| Trocar a cor de um módulo | `jogos.json` → `modulos[].cor` |
+| Trocar a logo | Substituir `logo.png` |
+| Trocar o favicon | Substituir `favicon.png` |
+| Mudar cores de ícones específicos | `style.css` → `.card-{id} .project-icon` |
+| Mudar o rótulo "Construct 3"/"Scratch" | `<script>` no `index.html` |
+
+---
+
+**Desenvolvido para a CódigoKid Erechim** · Jogos criados com Construct 3 e Scratch 🎮🐱

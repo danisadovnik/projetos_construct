@@ -1,30 +1,66 @@
 {
-  "jogosModulo": [
+  "modulos": [
     {
-      "id": "asteroid",
-      "nome": "Asteroid",
-      "icone": "☄️",
-      "embedUrl": "https://games.construct.net/88390/latest"
+      "id": "construct",
+      "titulo": "Jogos propostos pelo módulo Construct",
+      "subtitulo": "Projetos guiados desenvolvidos em aula",
+      "icone": "🎯",
+      "cor": "#f5c76b",
+      "jogos": [
+        {
+          "id": "asteroid",
+          "nome": "Asteroid",
+          "icone": "☄️",
+          "embedUrl": "https://games.construct.net/88390/latest",
+          "instrucoes": "Use as setas ← → para girar e ↑ para acelerar. Pressione Espaço para atirar."
+        },
+        {
+          "id": "coelho",
+          "nome": "Coelho",
+          "icone": "🐇",
+          "embedUrl": "https://games.construct.net/88389/latest"
+        },
+        {
+          "id": "arena",
+          "nome": "Arena",
+          "icone": "⚔️",
+          "embedUrl": "https://games.construct.net/88296/latest"
+        },
+        {
+          "id": "plataforma",
+          "nome": "Plataforma",
+          "icone": "🎮",
+          "embedUrl": "https://games.construct.net/88386/latest"
+        }
+      ]
     },
     {
-      "id": "coelho",
-      "nome": "Coelho",
-      "icone": "🐇",
-      "embedUrl": "https://games.construct.net/88389/latest"
-    },
-    {
-      "id": "arena",
-      "nome": "Arena",
-      "icone": "⚔️",
-      "embedUrl": "https://games.construct.net/88296/latest"
-    },
-    {
-      "id": "plataforma",
-      "nome": "Plataforma",
-      "icone": "🎮",
-      "embedUrl": "https://games.construct.net/88386/latest"
+      "id": "scratch",
+      "titulo": "Jogos propostos pelo módulo Scratch",
+      "subtitulo": "Criações com programação em blocos",
+      "icone": "🐱",
+      "cor": "#ff9b4a",
+      "jogos": [
+        {
+          "id": "scratch-explosoes",
+          "nome": "Explosões",
+          "icone": "🔴",
+          "embedUrl": "https://scratch.mit.edu/projects/1399312910/embed",
+          "instrucoes": "Use as setas para controlar o movimento do personagem. Fuja das explosões, e sobreviva o quanto conseguir!"
+        }
+      ]
     }
   ],
   "jogosAlunos": [
+    {
+      "id": "scratch-pong",
+      "nome": "Scratch Pong",
+      "descricao": "Ping Pong clássico",
+      "aluno": "Daniel",
+      "icone": "🏓",
+      "embedUrl": "https://scratch.mit.edu/projects/703100596/embed",
+      "instrucoes":"Use as setas ⬆️ e ⬇️ para controlar a raquete. Você joga com a da esquerda."
+    }
   ]
+
 }

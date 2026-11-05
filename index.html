@@ -32,15 +32,9 @@
       </div>
     </div>
 
-    <!-- TÍTULO DA SEÇÃO: JOGOS DO MÓDULO -->
-    <div class="section-header">
-      <h2 class="section-title">🎯 Jogos propostos pelo módulo Construct</h2>
-      <span class="section-subtitle">Projetos guiados desenvolvidos em aula</span>
-    </div>
-
-    <!-- grade com os 4 projetos do módulo (preenchida via JSON) -->
-    <div class="projects-grid" id="jogosModuloGrid">
-      <!-- preenchido dinamicamente pelo JavaScript -->
+           <!-- CONTAINER DINÂMICO DE MÓDULOS (Construct, Scratch, etc.) -->
+    <div id="modulosContainer">
+      <!-- preenchido dinamicamente pelo JavaScript a partir do jogos.json -->
     </div>
 
     <!-- BLOCO EXPANSÍVEL: JOGOS DOS ALUNOS -->
@@ -81,12 +75,18 @@
         <button class="close-btn" id="closeDialogBtn">✕ Fechar</button>
       </div>
     </div>
-    <div class="dialog-body">
-      <div class="loading-overlay" id="dialogLoading">
-        <div class="spinner"></div>
-        <span>Carregando jogo...</span>
+        <div class="dialog-body">
+      <div class="game-instructions" id="dialogInstructions" hidden>
+        <span class="instructions-icon">💡</span>
+        <span class="instructions-text" id="dialogInstructionsText"></span>
       </div>
-      <iframe id="dialogFrame" src="" allowfullscreen allow="fullscreen; autoplay; gamepad"></iframe>
+      <div class="iframe-wrapper">
+        <div class="loading-overlay" id="dialogLoading">
+          <div class="spinner"></div>
+          <span>Carregando jogo...</span>
+        </div>
+        <iframe id="dialogFrame" src="" allowfullscreen allow="fullscreen; autoplay; gamepad; accelerometer; gyroscope"></iframe>
+      </div>
     </div>
   </dialog>
 
@@ -110,42 +110,63 @@
   // CARREGAMENTO DOS JOGOS A PARTIR DO JSON
   // ============================================
 
+    const modulosContainer = document.getElementById('modulosContainer');
+
   async function carregarJogos() {
     try {
       const resposta = await fetch('jogos.json');
       if (!resposta.ok) throw new Error('Não foi possível carregar o jogos.json');
       const dados = await resposta.json();
 
-      renderizarJogosModulo(dados.jogosModulo || []);
+      renderizarModulos(dados.modulos || []);
       renderizarJogosAlunos(dados.jogosAlunos || []);
     } catch (erro) {
       console.error('❌ Erro ao carregar jogos:', erro);
-      // Fallback: mostra mensagem amigável
-      jogosModuloGrid.innerHTML = '<p style="color:#8a93af; grid-column: 1/-1; text-align:center;">Não foi possível carregar a lista de jogos.</p>';
+      modulosContainer.innerHTML = '<p style="color:#8a93af; text-align:center;">Não foi possível carregar a lista de jogos.</p>';
     }
   }
 
-  // Renderiza os cards dos jogos do módulo
-  function renderizarJogosModulo(jogos) {
-    jogosModuloGrid.innerHTML = '';
-    jogos.forEach(jogo => {
-      const card = document.createElement('a');
-      card.href = '#';
-      card.className = `project-card card-${jogo.id}`;
-      card.style.textDecoration = 'none';
-      card.dataset.game = jogo.embedUrl;
-      card.dataset.name = jogo.nome;
-      card.innerHTML = `
-        <div class="project-icon">${jogo.icone || '🎮'}</div>
-        <div class="project-name">${jogo.nome}</div>
-        <div class="project-sub">Construct 3</div>
-        <div class="cta-play">▶ selecionar</div>
+  // Renderiza todos os módulos (Construct, Scratch, etc.)
+  function renderizarModulos(modulos) {
+    modulosContainer.innerHTML = '';
+    modulos.forEach(modulo => {
+      const secao = document.createElement('section');
+      secao.className = 'modulo-section';
+      secao.style.setProperty('--modulo-cor', modulo.cor || '#f5c76b');
+
+      secao.innerHTML = `
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="section-icon">${modulo.icone || '🎯'}</span>
+            ${modulo.titulo}
+          </h2>
+          <span class="section-subtitle">${modulo.subtitulo || ''}</span>
+        </div>
+        <div class="projects-grid"></div>
       `;
-      card.addEventListener('click', e => {
-        e.preventDefault();
-        abrirJogoDialog(jogo.embedUrl, jogo.nome);
+
+      const grid = secao.querySelector('.projects-grid');
+      (modulo.jogos || []).forEach(jogo => {
+        const card = document.createElement('a');
+        card.href = '#';
+        card.className = `project-card card-${jogo.id}`;
+        card.style.textDecoration = 'none';
+        card.dataset.game = jogo.embedUrl;
+        card.dataset.name = jogo.nome;
+        card.innerHTML = `
+          <div class="project-icon">${jogo.icone || '🎮'}</div>
+          <div class="project-name">${jogo.nome}</div>
+          <div class="project-sub">${modulo.id === 'scratch' ? 'Scratch' : 'Construct 3'}</div>
+          <div class="cta-play">▶ selecionar</div>
+        `;
+               card.addEventListener('click', e => {
+          e.preventDefault();
+          abrirJogoDialog(jogo.embedUrl, jogo.nome, jogo.instrucoes);
+        });
+        grid.appendChild(card);
       });
-      jogosModuloGrid.appendChild(card);
+
+      modulosContainer.appendChild(secao);
     });
   }
 
@@ -182,10 +203,23 @@
   // DIALOG (abrir/fechar/fullscreen)
   // ============================================
 
-  function abrirJogoDialog(url, nome) {
+  const dialogInstructions = document.getElementById('dialogInstructions');
+  const dialogInstructionsText = document.getElementById('dialogInstructionsText');
+
+  function abrirJogoDialog(url, nome, instrucoes) {
     currentGameUrl = url;
     currentGameName = nome;
     dialogTitle.textContent = '🎮 ' + nome;
+
+    // Instruções (opcional)
+    if (instrucoes && instrucoes.trim() !== '') {
+      dialogInstructionsText.textContent = instrucoes;
+      dialogInstructions.hidden = false;
+    } else {
+      dialogInstructionsText.textContent = '';
+      dialogInstructions.hidden = true;
+    }
+
     dialogLoading.style.display = 'flex';
     dialogFrame.src = url;
     dialogFrame.onload = function () {
